@@ -1,3 +1,7 @@
+## Embedding Layer追加予定
+2021年5月
+
+
 <p>
 <a href="https://www.amazon.co.jp/dp/4873119065/ref=cm_sw_r_tw_dp_U_x_KiA1Eb39SW14Q"><img src="https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-3/images/deep-learning-from-scratch-3.png" height="250"></a>
 </p>
