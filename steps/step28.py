@@ -15,20 +15,28 @@ def rosenbrock(x0, x1):
     y = 100 * (x1 - x0 ** 2) ** 2 + (x0 - 1) ** 2
     return y
 
+def f(x):
+    y  = x**4 - 2*x**2
+    return y
 
-x0 = Variable(np.array(0.0))
-x1 = Variable(np.array(2.0))
+def gx2(x):
+    return 12*x**2-4
+
+#x0 = Variable(np.array(0.0))
+#x1 = Variable(np.array(2.0))
+x = Variable(np.array(2.0))
+
 lr = 0.001
-iters = 1000
+iters = 10
 
 for i in range(iters):
-    print(x0, x1)
+    print(x)
 
-    y = rosenbrock(x0, x1)
-
-    x0.cleargrad()
-    x1.cleargrad()
+    y = f(x)
+    x.cleargrad()
+    #x1.cleargrad()
     y.backward()
 
-    x0.data -= lr * x0.grad
-    x1.data -= lr * x1.grad
+    #x0.data -= lr * x0.grad
+    #x1.data -= lr * x1.grad
+    x.data -= x.grad/gx2(x.data)

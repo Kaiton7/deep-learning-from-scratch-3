@@ -22,5 +22,6 @@ for i in range(iters):
     x.cleargrad()
     gx.backward()
     gx2 = x.grad
-
+    print(type(gx),type(gx2))
+    
     x.data -= gx.data / gx2.data

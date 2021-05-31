@@ -77,12 +77,14 @@ def numerical_diff(f, x, eps=1e-4):
 
 class SquareTest(unittest.TestCase):
     def test_forward(self):
+        print("foward")
         x = Variable(np.array(2.0))
         y = square(x)
         expected = np.array(4.0)
         self.assertEqual(y.data, expected)
 
     def test_backward(self):
+        print("backward")
         x = Variable(np.array(3.0))
         y = square(x)
         y.backward()
@@ -90,6 +92,7 @@ class SquareTest(unittest.TestCase):
         self.assertEqual(x.grad, expected)
 
     def test_gradient_check(self):
+        print("gradient")
         x = Variable(np.random.rand(1))
         y = square(x)
         y.backward()
