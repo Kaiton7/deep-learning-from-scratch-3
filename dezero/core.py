@@ -185,6 +185,7 @@ class Function:
         inputs = [as_variable(x) for x in inputs]
 
         xs = [x.data for x in inputs]
+        #print("xs",xs)
         ys = self.forward(*xs)
         if not isinstance(ys, tuple):
             ys = (ys,)
@@ -196,7 +197,7 @@ class Function:
                 output.set_creator(self)
             self.inputs = inputs
             self.outputs = [weakref.ref(output) for output in outputs]
-
+        #print("ancestor function called",outputs)
         return outputs if len(outputs) > 1 else outputs[0]
 
     def forward(self, xs):

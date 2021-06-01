@@ -11,21 +11,23 @@ from dezero.utils import pair
 # Layer (base class)
 # =============================================================================
 class Layer:
-    def __init__(self):
+    def __init__(self) -> None:
         self._params = set()
-
-    def __setattr__(self, name, value):
+    
+    def __setattr__(self, name: str, value) -> None:
         if isinstance(value, (Parameter, Layer)):
             self._params.add(name)
         super().__setattr__(name, value)
-
+    
     def __call__(self, *inputs):
         outputs = self.forward(*inputs)
         if not isinstance(outputs, tuple):
             outputs = (outputs,)
         self.inputs = [weakref.ref(x) for x in inputs]
         self.outputs = [weakref.ref(y) for y in outputs]
-        return outputs if len(outputs) > 1 else outputs[0]
+        return outputs if len(outputs) >1 else outputs[0]
+
+
 
     def forward(self, inputs):
         raise NotImplementedError()

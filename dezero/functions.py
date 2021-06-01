@@ -39,18 +39,16 @@ def cos(x):
     return Cos()(x)
 
 
+
 class Tanh(Function):
     def forward(self, x):
-        xp = cuda.get_array_module(x)
-        y = xp.tanh(x)
+        y = np.tanh(x)
         return y
-
     def backward(self, gy):
-        y = self.outputs[0]()  # weakref
+        y = self.outputs[0]()
         gx = gy * (1 - y * y)
         return gx
-
-
+    
 def tanh(x):
     return Tanh()(x)
 
@@ -93,15 +91,13 @@ def log(x):
 class Reshape(Function):
     def __init__(self, shape):
         self.shape = shape
-
+    
     def forward(self, x):
         self.x_shape = x.shape
         y = x.reshape(self.shape)
         return y
-
     def backward(self, gy):
         return reshape(gy, self.x_shape)
-
 
 def reshape(x, shape):
     if x.shape == shape:
@@ -183,6 +179,7 @@ def flatten(x):
 # =============================================================================
 # sum / sum_to / broadcast_to / average / matmul / linear
 # =============================================================================
+# xはnp.arrayです
 class Sum(Function):
     def __init__(self, axis, keepdims):
         self.axis = axis
@@ -190,6 +187,7 @@ class Sum(Function):
 
     def forward(self, x):
         self.x_shape = x.shape
+        #print("x type",type(x),x)
         y = x.sum(axis=self.axis, keepdims=self.keepdims)
         return y
 
@@ -201,6 +199,7 @@ class Sum(Function):
 
 
 def sum(x, axis=None, keepdims=False):
+    #print("sum function called")
     return Sum(axis, keepdims)(x)
 
 
@@ -258,17 +257,14 @@ class MatMul(Function):
     def forward(self, x, W):
         y = x.dot(W)
         return y
-
     def backward(self, gy):
         x, W = self.inputs
         gx = matmul(gy, W.T)
         gW = matmul(x.T, gy)
         return gx, gW
 
-
 def matmul(x, W):
     return MatMul()(x, W)
-
 
 class Linear(Function):
     def forward(self, x, W, b):
