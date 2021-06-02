@@ -435,17 +435,19 @@ class MeanSquaredError(Function):
 def mean_squared_error(x0, x1):
     return MeanSquaredError()(x0, x1)
 
-
 def softmax_cross_entropy_simple(x, t):
-    x, t = as_variable(x), as_variable(t)
+    x,t = as_variable(x), as_variable(t)
     N = x.shape[0]
     p = softmax(x)
-    p = clip(p, 1e-15, 1.0)  # To avoid log(0)
+    print("p",p)
+    p = clip(p, 1e-14, 1.0)
     log_p = log(p)
+    print("tdata",t.data)
+    print("arange",np.arange(N))
     tlog_p = log_p[np.arange(N), t.data]
-    y = -1 * sum(tlog_p) / N
+    print("tlogp",tlog_p)
+    y = -1*sum(tlog_p)/N
     return y
-
 
 class SoftmaxCrossEntropy(Function):
     def forward(self, x, t):
