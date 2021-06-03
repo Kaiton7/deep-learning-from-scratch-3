@@ -10,41 +10,49 @@ import dezero.functions as F
 from dezero.models import MLP
 
 # Hyperparameters
-max_epoch = 300
+max_epoch = 30
 batch_size = 30
-hidden_size = 10
+hidden_size = 100
 lr = 1.0
 
-x, t = dezero.datasets.get_spiral(train=True)
+
+x,t = dezero.datasets.get_spiral(train=True)
 model = MLP((hidden_size, 3))
 optimizer = optimizers.SGD(lr).setup(model)
 
 data_size = len(x)
-max_iter = math.ceil(data_size / batch_size)
+max_iter = math.ceil(data_size/batch_size)
 
 for epoch in range(max_epoch):
-    # Shuffle index for data
     index = np.random.permutation(data_size)
     sum_loss = 0
-
     for i in range(max_iter):
-        batch_index = index[i * batch_size:(i + 1) * batch_size]
+        batch_index = index[i*batch_size:(i+1)*batch_size]
         batch_x = x[batch_index]
         batch_t = t[batch_index]
 
         y = model(batch_x)
+        print("y",y)
         loss = F.softmax_cross_entropy(y, batch_t)
+        print("loss",loss)
         model.cleargrads()
         loss.backward()
         optimizer.update()
 
         sum_loss += float(loss.data) * len(batch_t)
-
-    # Print loss every epoch
+    #avg_loss = sum_loss/max_iter
     avg_loss = sum_loss / data_size
     print('epoch %d, loss %.2f' % (epoch + 1, avg_loss))
-
+print("maxiter",max_iter)
+print(index)
+c=0
+for name in model._params:
+    print(name,model.__dict__[name])
+    print(model.__dict__[name].W.shape)
+print(model)
+print(c)
 # Plot boundary area the model predict
+"""
 h = 0.001
 x_min, x_max = x[:, 0].min() - .1, x[:, 0].max() + .1
 y_min, y_max = x[:, 1].min() - .1, x[:, 1].max() + .1
@@ -65,3 +73,4 @@ for i in range(len(x)):
     c = t[i]
     plt.scatter(x[i][0], x[i][1], s=40,  marker=markers[c], c=colors[c])
 plt.show()
+"""
