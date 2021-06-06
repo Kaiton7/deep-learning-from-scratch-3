@@ -8,7 +8,7 @@ from dezero import DataLoader
 from dezero.models import MLP
 
 
-max_epoch = 300
+max_epoch = 3
 batch_size = 30
 hidden_size = 10
 lr = 1.0
@@ -50,3 +50,14 @@ for epoch in range(max_epoch):
 
     print('test loss: {:.4f}, accuracy: {:.4f}'.format(
         sum_loss / len(test_set), sum_acc / len(test_set)))
+
+# パラメーターの確認
+# レイヤーの中にパラメータを保持している
+for m in model.layers:
+    print(m)
+    c = 0
+    for p in m.params():
+        print(p)
+        c+=1
+    print(m._params)
+    print("parameter number",c)
